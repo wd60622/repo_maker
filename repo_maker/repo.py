@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import os
 
 this_root = os.path.abspath(os.path.join(__file__, '../..'))
@@ -97,11 +95,3 @@ def create_repo(repo_name):
     os.chdir(os.path.join(root, 'dev'))
     dev_dirs = ['notebooks', 'workspace']
     make_dirs(dev_dirs)
-
-
-if __name__ == '__main__':
-    repo_name = input('What is the name of the repo? ')
-
-    assert isinstance(repo_name, str) and len(repo_name) > 0, 'Please enter a repo name!'
-
-    create_repo(repo_name)
