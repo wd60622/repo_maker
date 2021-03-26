@@ -3,6 +3,15 @@
 ## Overview
 Quickly create data science project directory for python. 
 
+```shell
+>>> make_repo
+What is the name of the repo? sample_repo
+Do you want to create an environment? (y/n) n
+No environment created.
+Do you want to init git? (y/n) n
+No Git Init.
+```
+
 The repository that is created is in the following format: 
 <p align="center">
   <img src="images/repo_outcome.png" width="250" height="250"/>
