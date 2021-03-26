@@ -2,7 +2,7 @@
 
 import os
 
-this_root = os.path.abspath(os.path.join(__file__, '..'))
+this_root = os.path.abspath(os.path.join(__file__, '../..'))
 
 def make_dir(dir_name):
     os.mkdir(dir_name)
@@ -23,7 +23,7 @@ def touch_files(files):
 
 def read_file(file):
     if not os.path.exists(file):
-        raise ValueError("This file doesn't exist!")
+        raise ValueError(f"This file doesn't exist! {file}")
 
     with open(file, 'r') as f:
         lines = f.readlines()
