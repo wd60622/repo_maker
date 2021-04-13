@@ -8,6 +8,6 @@ setup(
     author='William Dean',
     author_email='wdean@homepartners.com',
     description='Quickly create data science repo.',
-    packages=['repo_maker'],
+    packages=['repo_maker', 'files'],
     scripts=['scripts/make_repo']
 )
