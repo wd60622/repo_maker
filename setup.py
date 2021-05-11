@@ -11,6 +11,7 @@ setup(
     packages=['repo_maker', 'repo_maker/files'],
     scripts=['scripts/make_repo'],
     package_data={
-        "files": ['*.txt']
-    }
+        "": ['*.txt']
+    },
+    include_package_data=True
 )
