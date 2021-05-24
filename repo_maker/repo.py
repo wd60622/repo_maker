@@ -75,8 +75,9 @@ def create_repo(repo_name):
         print('No Git Init.')
 
     # Create Files
-    files = ['README.md', '.gitignore']
+    files = ['README.md', '.gitignore', '.env.example']
     touch_files(files)
+    
     sample_gitignore_lines = read_file(os.path.join(this_root, '.gitignore'))
     write_file(sample_gitignore_lines, '.gitignore')
 
