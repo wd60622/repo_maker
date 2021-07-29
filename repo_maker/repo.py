@@ -82,7 +82,7 @@ def create_repo(repo_name):
     write_file(sample_gitignore_lines, '.gitignore')
 
     # Initialize all directories
-    root_dirs = ['dev', repo_name, 'tests', 'data']
+    root_dirs = ['notebooks', repo_name, 'scripts', 'tests', 'data']
     make_dirs(root_dirs)
 
     files = ['__init__.py']
@@ -92,7 +92,3 @@ def create_repo(repo_name):
     file = os.path.join(repo_name, 'utils.py')
     file_lines = '''import os\n\nDATA_DIR = os.path.abspath(os.path.join(__file__, '../../data'))\n'''
     write_file(file_lines, file)
-
-    os.chdir(os.path.join(root, 'dev'))
-    dev_dirs = ['notebooks', 'workspace']
-    make_dirs(dev_dirs)
