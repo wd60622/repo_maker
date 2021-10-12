@@ -8,8 +8,9 @@ Quickly create data science project directory for python.
 What is the name of the repo? sample_repo
 Do you want to create an environment? (y/n) n
 No environment created.
-Do you want to init git? (y/n) n
-No Git Init.
+Do you want to init git? (y/n) y
+Initialized empty Git repository in /Users/<user-name>/sample_repo/.git/
+Git initialize.
 ```
 
 The repository that is created is in the following format:
@@ -43,4 +44,4 @@ After installation, the command `make_repo` is available.
 
 ## Changes
 
-A `scripts` directory is now created as well. 
+A `scripts` directory is now created as well.

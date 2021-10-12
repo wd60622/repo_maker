@@ -41,7 +41,7 @@ def write_file(data, file):
 def init_git():
     os.system('git init')
 
-def init_env(python_version='3.7'):
+def init_env(python_version='3.9'):
     os.system(f'pipenv --python {python_version}')
 
 def repo_exists(dir_name):
@@ -78,7 +78,9 @@ def create_repo(repo_name):
     files = ['README.md', '.gitignore', '.env.example']
     touch_files(files)
 
-    sample_gitignore_lines = read_file(os.path.join(this_root, 'repo_maker/files/gitignore.txt'))
+    file_dir = os.path.join(test_root, "repo_maker", "files")
+
+    sample_gitignore_lines = read_file(os.path.join(file_dir, 'gitignore'))
     write_file(sample_gitignore_lines, '.gitignore')
 
     # Initialize all directories
@@ -89,6 +91,6 @@ def create_repo(repo_name):
     files = [os.path.join(repo_name, file) for file in files]
     touch_files(files)
 
+    file_lines = read_file(os.path.join(file_dir, "utils.py"))
     file = os.path.join(repo_name, 'utils.py')
-    file_lines = '''import os\n\nDATA_DIR = os.path.abspath(os.path.join(__file__, '../../data'))\n'''
     write_file(file_lines, file)
