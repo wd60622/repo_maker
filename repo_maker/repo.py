@@ -1,32 +1,12 @@
 import os
+from pathlib import Path
 
-this_root = os.path.abspath(os.path.join(__file__, "../.."))
-
-
-def make_dir(dir_name):
-    os.mkdir(dir_name)
-
-
-def make_dirs(dir_names):
-    for dir_name in dir_names:
-        make_dir(dir_name)
-
-
-def touch(fname):
-    try:
-        os.utime(fname, None)
-    except OSError:
-        open(fname, "a").close()
-
-
-def touch_files(files):
-    for file in files:
-        touch(file)
+from repo_maker.utils import FILES_DIR
 
 
 def read_file(file):
-    if not os.path.exists(file):
-        raise ValueError(f"This file doesn't exist! {file}")
+    if not file.exists():
+        raise FileNotFoundError(f"This file doesn't exist! {file}")
 
     with open(file, "r") as f:
         lines = f.readlines()
@@ -42,7 +22,7 @@ def write_file(data, file):
         elif isinstance(data, str):
             f.write(data)
         else:
-            raise ValueError(f"Cannot write data type {type(data)}")
+            raise InputError(f"Cannot write data type {type(data)}")
 
 
 def init_git():
@@ -53,20 +33,25 @@ def init_env(python_version="3.9"):
     os.system(f"pipenv --python {python_version}")
 
 
-def repo_exists(dir_name):
-    return os.path.exists(dir_name)
+def create_module_name(repo_name: str):
+    return repo_name.replace(" ", "_").replace("-", "_").lower()
 
 
-def create_repo(repo_name):
-    cwd = os.getcwd()
+class RepoAlreadyExistsError(Exception):
+    pass
 
-    if os.path.exists(repo_name):
-        assert "Repo already exists"
 
-    make_dir(repo_name)
+def create_repo(repo_name: str):
+    cwd = Path.cwd()
 
-    root = os.path.join(cwd, repo_name)
-    os.chdir(root)
+    repo_root = cwd / repo_name
+
+    if repo_root.exists():
+        raise RepoAlreadyExistsError("The repo already exists.")
+
+    repo_root.mkdir()
+
+    os.chdir(repo_root)
 
     msg = "Do you want to create an environment? (y/n) "
     environment = input(msg)
@@ -84,23 +69,24 @@ def create_repo(repo_name):
     else:
         print("No Git Init.")
 
-    # Create Files
-    files = ["README.md", ".gitignore", ".env.example"]
-    touch_files(files)
+    # Create files in the root
+    files = ["README.md", ".gitignore", ".env.example", "Makefile"]
+    for file in files:
+        (repo_root / file).touch()
 
-    file_dir = os.path.join(test_root, "repo_maker", "files")
+    sample_gitignore_lines = read_file(FILES_DIR / "gitignore")
+    write_file(sample_gitignore_lines, repo_root / ".gitignore")
 
-    sample_gitignore_lines = read_file(os.path.join(file_dir, "gitignore"))
-    write_file(sample_gitignore_lines, ".gitignore")
-
+    module_name = create_module_name(repo_name)
     # Initialize all directories
-    root_dirs = ["notebooks", repo_name, "scripts", "tests", "data"]
-    make_dirs(root_dirs)
+    root_dirs = ["notebooks", module_name, "scripts", "tests", "data"]
+    for root_dir in root_dirs:
+        (repo_root / root_dir).mkdir()
 
+    # Create files in the project directory
     files = ["__init__.py"]
-    files = [os.path.join(repo_name, file) for file in files]
-    touch_files(files)
+    for file in files:
+        (repo_root / module_name / file).touch()
 
-    file_lines = read_file(os.path.join(file_dir, "utils.py"))
-    file = os.path.join(repo_name, "utils.py")
-    write_file(file_lines, file)
+    file_lines = read_file(FILES_DIR / "utils.py")
+    write_file(file_lines, repo_root / module_name / "utils.py")
