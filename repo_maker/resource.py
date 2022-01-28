@@ -11,8 +11,6 @@ __all__ = ["GIT", "PIPENV"]
 
 def run_command(command: str) -> CompletedProcess:
     return subprocess.run(command, shell=True, capture_output=True)
-    print(response)
-    return response.returncode == 0
 
 
 class Resource(ABC):
