@@ -1,30 +1,9 @@
 import os
 from pathlib import Path
 
-from repo_maker.resource import PYENV, GIT
+from repo_maker.resource import PIPENV, GIT
 
 from repo_maker.utils import FILES_DIR
-
-
-def read_file(file):
-    if not file.exists():
-        raise FileNotFoundError(f"This file doesn't exist! {file}")
-
-    with open(file, "r") as f:
-        lines = f.readlines()
-
-    return lines
-
-
-def write_file(data, file):
-    with open(file, "w") as f:
-        if isinstance(data, list):
-            for line in data:
-                f.write(line)
-        elif isinstance(data, str):
-            f.write(data)
-        else:
-            raise InputError(f"Cannot write data type {type(data)}")
 
 
 def create_module_name(repo_name: str):
@@ -35,7 +14,7 @@ class RepoAlreadyExistsError(Exception):
     pass
 
 
-def create_repo(repo_name: str):
+def create_repo(repo_name: str) -> None:
     cwd = Path.cwd()
 
     repo_root = cwd / repo_name
@@ -52,12 +31,12 @@ def create_repo(repo_name: str):
     GIT().init_if_exists()
 
     # Create files in the root
-    files = ["README.md", ".gitignore", ".env.example", "Makefile"]
+    files = ["README.md", ".env.example", "Makefile"]
     for file in files:
         (repo_root / file).touch()
 
-    sample_gitignore_lines = read_file(FILES_DIR / "gitignore")
-    write_file(sample_gitignore_lines, repo_root / ".gitignore")
+    sample_gitignore_lines = (FILES_DIR / "gitignore").read_text()
+    (repo_root / ".gitignore").write_text(sample_gitignore_lines)
 
     module_name = create_module_name(repo_name)
     # Initialize all directories
@@ -70,5 +49,5 @@ def create_repo(repo_name: str):
     for file in files:
         (repo_root / module_name / file).touch()
 
-    file_lines = read_file(FILES_DIR / "utils.py")
-    write_file(file_lines, repo_root / module_name / "utils.py")
+    file_lines = (FILES_DIR / "utils.py").read_text()
+    (repo_root / module_name / "utils.py").write_text(file_lines)

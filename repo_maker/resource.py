@@ -1,23 +1,38 @@
-import os
+import subprocess
+from subprocess import CompletedProcess
+
+import rich
+
+from abc import ABC, abstractmethod
 
 
-__all__ = ["GIT", "PYENV"]
+__all__ = ["GIT", "PIPENV"]
 
 
-class Resource:
+def run_command(command: str) -> CompletedProcess:
+    return subprocess.run(command, shell=True, capture_output=True)
+    print(response)
+    return response.returncode == 0
+
+
+class Resource(ABC):
     @property
     def base_command(self) -> str:
         raise NotImplementedError
 
     def installed(self) -> bool:
-        return os.system(f"which {self.base_command}") == 0
+        return run_command(f"which {self.base_command}").returncode == 0
+
+    @abstractmethod
+    def init_if_exists(self) -> None:
+        """Initialize the resource. Can have prompting."""
 
 
 class GIT(Resource):
     base_command: str = "git"
 
     def init(self) -> bool:
-        return os.system(f"{self.base_command} init") == 0
+        return run_command(f"{self.base_command} init").returncode == 0
 
     def init_if_exists(self) -> None:
         if not self.installed():
@@ -25,16 +40,22 @@ class GIT(Resource):
 
         init_git = input("Do you want to init git? (y/n) ")
         if init_git == "y" and self.init():
-            print("Git initialized.")
+            rich.print("Git initialized.")
         else:
-            print("No Git initialized.")
+            rich.print("No Git initialized.")
 
 
-class PYENV(Resource):
+class PIPENV(Resource):
     base_command: str = "pipenv"
 
     def init(self, python_version: str = "3.9") -> bool:
-        return os.system(f"{self.base_command} --python {python_version}") == 0
+        response = run_command(f"{self.base_command} --python {python_version}")
+        if response.stderr:
+            rich.print(response.stderr.decode("utf-8"))
+            return True
+
+        rich.print(f"Python {python_version} created.")
+        return response.returncode == 0
 
     def init_if_exists(self) -> None:
         if not self.installed():
@@ -45,7 +66,6 @@ class PYENV(Resource):
             python_version = input("Which python version? ")
             # TODO: get this check to work
             if self.init(python_version):
-                print(f"Python {python_version} created.")
                 return
 
-        print("No environment created.")
+        rich.print("No environment created.")
