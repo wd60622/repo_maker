@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name="repo_maker",
-    version="0.1.4",
+    version="0.1.5",
     author="William Dean",
     author_email="wdean@homepartners.com",
     description="Quickly create data science repo.",

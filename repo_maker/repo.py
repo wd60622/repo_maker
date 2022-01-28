@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+from repo_maker.resource import PYENV, GIT
+
 from repo_maker.utils import FILES_DIR
 
 
@@ -25,14 +27,6 @@ def write_file(data, file):
             raise InputError(f"Cannot write data type {type(data)}")
 
 
-def init_git():
-    os.system("git init")
-
-
-def init_env(python_version="3.9"):
-    os.system(f"pipenv --python {python_version}")
-
-
 def create_module_name(repo_name: str):
     return repo_name.replace(" ", "_").replace("-", "_").lower()
 
@@ -53,21 +47,9 @@ def create_repo(repo_name: str):
 
     os.chdir(repo_root)
 
-    msg = "Do you want to create an environment? (y/n) "
-    environment = input(msg)
-    if environment == "y":
-        version = input("Which python version? ")
-        init_env(version)
-        print(f"Python {version} created.")
-    else:
-        print("No environment created.")
+    PIPENV().init_if_exists()
 
-    git = input("Do you want to init git? (y/n) ")
-    if git == "y":
-        init_git()
-        print("Git initialize.")
-    else:
-        print("No Git Init.")
+    GIT().init_if_exists()
 
     # Create files in the root
     files = ["README.md", ".gitignore", ".env.example", "Makefile"]
