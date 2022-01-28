@@ -3,8 +3,10 @@
 from repo_maker import create_repo
 
 if __name__ == "__main__":
-    repo_name = input('What is the name of the repo? ')
+    repo_name = input("What is the name of the repo? ")
 
-    assert isinstance(repo_name, str) and len(repo_name) > 0, 'Please enter a repo name!'
+    assert (
+        isinstance(repo_name, str) and len(repo_name) > 0
+    ), "Please enter a repo name!"
 
     create_repo(repo_name)
