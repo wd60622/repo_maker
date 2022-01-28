@@ -64,7 +64,6 @@ class PIPENV(Resource):
         env = input("Do you want to create a pipenv environment? (y/n) ")
         if env == "y":
             python_version = input("Which python version? ")
-            # TODO: get this check to work
             if self.init(python_version):
                 return
 
