@@ -33,7 +33,7 @@ These include:
 ## Getting Started
 This module is pip installable. Simply clone and install with pip
 ``` shell
-git clone https://github.com/wdeanHPA/repo_maker.git
+git clone https://github.com/wd60622/repo_maker.git
 
 cd repo_maker
 
