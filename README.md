@@ -39,13 +39,9 @@ These include:
 * Initializing `git` in the repo.
 
 ## Getting Started
-This module is pip installable. Simply clone and install with pip
+This module is pip installable from Github
 ``` shell
-git clone https://github.com/wd60622/repo_maker.git
-
-cd repo_maker
-
-pip install .
+$ pip install -e git+https://github.com/wd60622/repo_maker/tree/main#egg=repo-maker
 ```
 
 After installation, the command `make_repo` is available. Run `make_repo --help` for additional support. 

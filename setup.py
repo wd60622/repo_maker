@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(
-    name="repo_maker",
+    name="repo-maker",
     version="0.1.6",
     author="William Dean",
     author_email="wd60622@gmail.com",
