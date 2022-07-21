@@ -1,8 +1,9 @@
 import os
 from pathlib import Path
 
-from repo_maker.resource import PIPENV, GIT
+import typer
 
+from repo_maker.resource import PIPENV, GIT
 from repo_maker.utils import FILES_DIR
 
 
@@ -14,17 +15,26 @@ class RepoAlreadyExistsError(Exception):
     pass
 
 
-def create_repo(repo_name: str) -> None:
+def create_repo(
+    repo_name: str = typer.Argument(..., help="The name of the new repo"),
+    in_root: bool = typer.Option(
+        False, "--in-root", help="Whether you are currently in the root"
+    ),
+) -> None:
+    """Create a new repo with boilerplate files."""
     cwd = Path.cwd()
 
-    repo_root = cwd / repo_name
+    if in_root:
+        repo_root = cwd
+    else:
+        repo_root = cwd / repo_name
 
-    if repo_root.exists():
-        raise RepoAlreadyExistsError("The repo already exists.")
+        if repo_root.exists():
+            raise RepoAlreadyExistsError("The repo already exists.")
 
-    repo_root.mkdir()
+        repo_root.mkdir()
 
-    os.chdir(repo_root)
+        os.chdir(repo_root)
 
     PIPENV().init_if_exists()
 

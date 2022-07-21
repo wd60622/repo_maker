@@ -12,5 +12,5 @@ setup(
     scripts=["scripts/make_repo"],
     package_data={"": ["*"]},
     include_package_data=True,
-    install_requires=["rich"],
+    install_requires=["typer[all]"],
 )

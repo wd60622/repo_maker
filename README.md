@@ -4,8 +4,7 @@
 Quickly create data science project directory for python.
 
 ```shell
->>> make_repo
-What is the name of the repo? sample_repo
+$ make_repo sample_repo
 Do you want to create an environment? (y/n) n
 No environment created.
 Do you want to init git? (y/n) y
@@ -17,6 +16,15 @@ The repository that is created is in the following format:
 <p align="center">
   <img src="images/repo_outcome.png" width="250" height="250"/>
 </p>
+
+If you are currently in an empty folder, the `--in-root` flag can be used to omit creating an additional folder. For instance, 
+
+```shell 
+$ mkdir repo-destination && cd repo-destination
+$ make_repo another_sample_repo --in-root
+```
+
+## Files Created
 
 The `.gitignore` created contains standard ignore file but also includes the data directory that is created. The file in `repo_maker/files` is used to create this ignore file.
 The `utils.py` file contains variable `DATA_DIR` which is the absolute path to the data folder in the root directory.
@@ -40,8 +48,4 @@ cd repo_maker
 pip install .
 ```
 
-After installation, the command `make_repo` is available.
-
-## Changes
-
-A `scripts` directory is now created as well.
+After installation, the command `make_repo` is available. Run `make_repo --help` for additional support. 
