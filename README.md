@@ -41,7 +41,7 @@ These include:
 ## Getting Started
 This module is pip installable from Github
 ``` shell
-$ pip install -e git+https://github.com/wd60622/repo_maker/tree/main#egg=repo-maker
+$ pip install git+https://github.com/wd60622/repo_maker.git
 ```
 
 After installation, the command `make_repo` is available. Run `make_repo --help` for additional support. 
